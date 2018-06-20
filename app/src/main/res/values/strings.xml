@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">CCPL TimeSheet</string>
+
+
+    <string name="text_bookmarks">Bookmarks</string>
+
+    <string name="text_history">History</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
