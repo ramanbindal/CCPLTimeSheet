@@ -32,7 +32,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
                 AttendanceItem.IN_TIME + " TEXT  NULL, " +
                 AttendanceItem.OUT_TIME + " TEXT  NULL, " +
                 AttendanceItem.TYPE + " TEXT  NULL, " +
-                AttendanceItem.DATE + " TEXT NULL, " +
+                AttendanceItem.IN_DATE + " TEXT NULL, " +
+                AttendanceItem.OUT_DATE + " TEXT NULL, " +
                 AttendanceItem.TOTAL_TIME + " TEXT NULL " +
                 " );";
     }
@@ -50,7 +51,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues attendanceBuider = new AttendanceItem.Builder()
-                .date(attendanceItem.getDate())
+                .outDate(attendanceItem.getOutDate())
+                .inDate(attendanceItem.getInDate())
                 .id(attendanceItem.getId())
                 .inTime(attendanceItem.getInTime())
                 .outTime(attendanceItem.getOutTime())
@@ -62,6 +64,26 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         db.close();
         return id;
     }
+
+    public void insertAttendanceItemList(List<AttendanceItem> attendanceItemList) {
+        // get writable database as we want to write data
+        SQLiteDatabase db = this.getWritableDatabase();
+        for (AttendanceItem attendanceItem : attendanceItemList) {
+
+            ContentValues attendanceBuider = new AttendanceItem.Builder()
+                    .outDate(attendanceItem.getOutDate())
+                    .inDate(attendanceItem.getInDate())
+                    .id(attendanceItem.getId())
+                    .inTime(attendanceItem.getInTime())
+                    .outTime(attendanceItem.getOutTime())
+                    .totalTime(attendanceItem.getTotalTime())
+                    .type(attendanceItem.getType())
+                    .build();
+            db.insert(AttendanceItem.TABLE, null, attendanceBuider);
+        }
+        db.close();
+    }
+
 
 //    public AttendanceItem getAttendanceItem(long id) {
 //        // get readable database as we are not inserting anything
@@ -101,14 +123,16 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             do {
 
                 long id = cursor.getInt(cursor.getColumnIndex(AttendanceItem.ID));
-                String date = cursor.getString(cursor.getColumnIndex(AttendanceItem.DATE));
+                String inDate = cursor.getString(cursor.getColumnIndex(AttendanceItem.IN_DATE));
+                String outDate = cursor.getString(cursor.getColumnIndex(AttendanceItem.OUT_DATE));
+
                 String totalTime = cursor.getString(cursor.getColumnIndex(AttendanceItem.TOTAL_TIME));
                 String inTime = cursor.getString(cursor.getColumnIndex(AttendanceItem.IN_TIME));
                 String outTime = cursor.getString(cursor.getColumnIndex(AttendanceItem.OUT_TIME));
                 String type = cursor.getString(cursor.getColumnIndex(AttendanceItem.TYPE));
 
 
-                attendanceItems.add(new AttendanceItem(id, date, totalTime, inTime, outTime, type));
+                attendanceItems.add(new AttendanceItem(id, inDate, outDate, totalTime, inTime, outTime, type));
             } while (cursor.moveToNext());
         }
 
@@ -135,8 +159,10 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public int updateAttendanceItem(AttendanceItem attendanceItem) {
         SQLiteDatabase db = this.getWritableDatabase();
 
+
         ContentValues attendanceBuider = new AttendanceItem.Builder()
-                .date(attendanceItem.getDate())
+                .outDate(attendanceItem.getOutDate())
+                .inDate(attendanceItem.getInDate())
                 .id(attendanceItem.getId())
                 .inTime(attendanceItem.getInTime())
                 .outTime(attendanceItem.getOutTime())

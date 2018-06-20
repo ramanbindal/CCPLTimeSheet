@@ -1,4 +1,4 @@
-package com.example.cub11.ccpltimesheet;
+package com.example.cub11.ccpltimesheet.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,10 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Toast;
+
+import com.example.cub11.ccpltimesheet.R;
 
 /**
  * A simple {@link Fragment} subclass.

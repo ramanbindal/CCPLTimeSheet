@@ -7,13 +7,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 
 import com.example.cub11.ccpltimesheet.database.DbOpenHelper;
+import com.example.cub11.ccpltimesheet.database.model.AttendanceItem;
+import com.example.cub11.ccpltimesheet.view.BookmarkFragment;
+import com.example.cub11.ccpltimesheet.view.HistoryFragment;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private DbOpenHelper db;
+    public List<AttendanceItem> attendanceItemList;
 
     BottomNavigationView bottomNavigationView;
 
@@ -21,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
