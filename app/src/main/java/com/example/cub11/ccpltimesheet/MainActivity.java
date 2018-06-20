@@ -10,7 +10,10 @@ import android.view.MenuItem;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 
+import com.example.cub11.ccpltimesheet.database.DbOpenHelper;
+
 public class MainActivity extends AppCompatActivity {
+    private DbOpenHelper db;
 
     BottomNavigationView bottomNavigationView;
 
@@ -18,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -44,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, BookmarkFragment.newInstance());
         transaction.commit();
+
+
+        db=new DbOpenHelper(this);
+
     }
 }
 
