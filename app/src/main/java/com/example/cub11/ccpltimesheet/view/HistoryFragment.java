@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HistoryFragment extends Fragment implements View.OnClickListener, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
+public class HistoryFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
 
     private RecyclerView recyclerView;
@@ -64,16 +64,16 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, R
         final View view = inflater.inflate(R.layout.historyfragment, container, false);
 
 
-        ImageButton button = (ImageButton) view.findViewById(R.id.closeButton);
+        ImageView button = (ImageView) view.findViewById(R.id.closeButton);
 
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BookmarkFragment fragment2 = new BookmarkFragment();
+                DatePickerFragment fragment2 = new DatePickerFragment();
                 FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, fragment2);
+                FragmentTransaction fragmentTransaction =  fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout, fragment2);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -105,10 +105,6 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, R
 
     }
 
-    @Override
-    public void onClick(View view) {
-
-    }
 
 
     @Override
