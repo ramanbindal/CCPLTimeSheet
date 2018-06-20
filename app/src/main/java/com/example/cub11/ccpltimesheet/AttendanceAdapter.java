@@ -55,7 +55,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.My
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final AttendanceItem item = attendanceItemList.get(position);
-        holder.date.setText(item.getDate() + "," + " Sunday");
+        holder.date.setText(item.getInDate() + "," + " Sunday");
         holder.totalTime.setText("( " + item.getTotalTime() + " Hrs )");
 
         holder.inTime.setText(item.getInTime());

@@ -182,5 +182,9 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteAllRecords() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from " + AttendanceItem.TABLE);
+    }
 
 }

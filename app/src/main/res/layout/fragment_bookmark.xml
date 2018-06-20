@@ -9,34 +9,34 @@
         android:id="@+id/punchIn"
         android:layout_width="150dp"
         android:layout_height="100dp"
-android:text="Punch In"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="97dp" />
+        android:layout_marginTop="97dp"
+        android:text="Punch In" />
 
     <Button
         android:id="@+id/absent"
         android:layout_width="150dp"
         android:layout_height="100dp"
-        android:text="Absent"
         android:layout_below="@+id/punchIn"
         android:layout_centerHorizontal="true"
-        android:layout_toLeftOf="@+id/punchIn" />
+        android:layout_toLeftOf="@+id/punchIn"
+        android:text="Absent" />
+
     <Button
         android:id="@+id/holiday"
         android:layout_width="150dp"
         android:layout_height="100dp"
         android:layout_below="@+id/punchIn"
-        android:text="Holiday"
         android:layout_centerHorizontal="true"
-        android:layout_toRightOf="@+id/punchIn" />
+        android:layout_toRightOf="@+id/punchIn"
+        android:text="Holiday" />
+
     <Button
         android:id="@+id/punchOut"
-        android:text="Punch Out"
-
         android:layout_width="150dp"
         android:layout_height="100dp"
         android:layout_below="@+id/absent"
         android:layout_centerHorizontal="true"
-     />
+        android:text="Punch Out" />
 
 </RelativeLayout>
