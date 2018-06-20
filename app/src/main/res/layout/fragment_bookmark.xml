@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BookmarkFragment">
+
+    <Button
+        android:id="@+id/punchIn"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+android:text="Punch In"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="97dp" />
+
+    <Button
+        android:id="@+id/absent"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:text="Absent"
+        android:layout_below="@+id/punchIn"
+        android:layout_centerHorizontal="true"
+        android:layout_toLeftOf="@+id/punchIn" />
+    <Button
+        android:id="@+id/holiday"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/punchIn"
+        android:text="Holiday"
+        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@+id/punchIn" />
+    <Button
+        android:id="@+id/punchOut"
+        android:text="Punch Out"
+
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/absent"
+        android:layout_centerHorizontal="true"
+     />
+
+</RelativeLayout>

@@ -23,8 +23,6 @@ import java.util.List;
 
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.MyViewHolder> {
 
-
-    private Context context;
     private List<AttendanceItem> attendanceItemList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -44,8 +42,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.My
     }
 
 
-    public AttendanceAdapter(Context context, List<AttendanceItem> attendanceItemList) {
-        this.context = context;
+    public AttendanceAdapter(List<AttendanceItem> attendanceItemList) {
         this.attendanceItemList = attendanceItemList;
     }
 
