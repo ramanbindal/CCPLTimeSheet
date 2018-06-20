@@ -7,23 +7,26 @@ public class AttendanceItem {
     public static final String TABLE = "attendance_item_table";
 
     public static final String ID = "_id";
-    public static final String DATE = "date";
+    public static final String IN_DATE = "in_date";
+    public static final String OUT_DATE = "out_date";
     public static final String TOTAL_TIME = "total_time";
     public static final String IN_TIME = "in_time";
     public static final String OUT_TIME = "out_time";
     public static final String TYPE = "type";
 
     private long id;
-    private String date;
+    private String inDate;
+    private String outDate;
     private String totalTime;
     private String inTime;
     private String outTime;
     private String type;
 
 
-    public AttendanceItem(long id, String date, String totalTime, String inTime, String outTime, String type) {
+    public AttendanceItem(long id, String inDate, String outDate, String totalTime, String inTime, String outTime, String type) {
         this.id = id;
-        this.date = date;
+        this.inDate = inDate;
+        this.outDate = outDate;
         this.totalTime = totalTime;
         this.inTime = inTime;
         this.outTime = outTime;
@@ -38,12 +41,20 @@ public class AttendanceItem {
         this.id = id;
     }
 
-    public String getDate() {
-        return date;
+    public String getInDate() {
+        return inDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setInDate(String inDate) {
+        this.inDate = inDate;
+    }
+
+    public String getOutDate() {
+        return outDate;
+    }
+
+    public void setOutDate(String outDate) {
+        this.outDate = outDate;
     }
 
     public String getInTime() {
@@ -86,10 +97,15 @@ public class AttendanceItem {
             return this;
         }
 
-        public Builder date(String date) {
-            values.put(DATE, date);
+        public Builder inDate(String inDate) {
+            values.put(IN_DATE, inDate);
             return this;
         }
+        public Builder outDate(String outDate) {
+            values.put(OUT_DATE, outDate);
+            return this;
+        }
+
 
         public Builder inTime(String inTime) {
             values.put(IN_TIME, inTime);
