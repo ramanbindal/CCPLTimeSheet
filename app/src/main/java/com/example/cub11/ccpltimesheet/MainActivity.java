@@ -1,9 +1,11 @@
 package com.example.cub11.ccpltimesheet;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,7 +15,11 @@ import com.example.cub11.ccpltimesheet.database.model.AttendanceItem;
 import com.example.cub11.ccpltimesheet.view.BookmarkFragment;
 import com.example.cub11.ccpltimesheet.view.HistoryFragment;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -96,5 +102,55 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    public void onAbsentClicked() {
+
+        Date currentTime = Calendar.getInstance().getTime();
+        DateFormat date = new SimpleDateFormat("dd-MM-yyyy");
+        String localTime = date.format(currentTime);
+
+
+        Log.e("raman", "time " + localTime);
+
+
+//        long yourmilliseconds = System.currentTimeMillis();
+//        Date resultdate = new Date(yourmilliseconds);
+//        Log.e("raman", "time " + resultdate);
+
+        showAlertDialog("Absent marked!");
+
+
+    }
+
+    public void onHolidayClicked() {
+        Date currentTime = Calendar.getInstance().getTime();
+        showAlertDialog("Holiday marked!");
+
+
+    }
+
+    public void onPunchInClicked() {
+        Date currentTime = Calendar.getInstance().getTime();
+        showAlertDialog("punch in time marked!");
+
+    }
+
+    public void onPunchOutClicked() {
+        Date currentTime = Calendar.getInstance().getTime();
+        showAlertDialog("punch out time marked!");
+
+    }
+
+
+    public void showAlertDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //do things
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }
 

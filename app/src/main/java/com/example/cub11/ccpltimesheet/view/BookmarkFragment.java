@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.cub11.ccpltimesheet.MainActivity;
 import com.example.cub11.ccpltimesheet.R;
 
 /**
@@ -31,8 +32,7 @@ public class BookmarkFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_bookmark, container, false);
         punchInBtn = view.findViewById(R.id.punchIn);
         punchOutBtn = view.findViewById(R.id.punchOut);
@@ -44,23 +44,26 @@ public class BookmarkFragment extends Fragment implements View.OnClickListener {
         holidayBtn.setOnClickListener(this);
 
 
-
         return view;
     }
 
     @Override
     public void onClick(View v) {
 
+        MainActivity mainActivity = (MainActivity) getActivity();
 
         switch (v.getId()) {
             case R.id.absent:
-
+                mainActivity.onAbsentClicked();
                 break;
             case R.id.holiday:
+                mainActivity.onHolidayClicked();
                 break;
             case R.id.punchIn:
+                mainActivity.onPunchInClicked();
                 break;
             case R.id.punchOut:
+                mainActivity.onPunchOutClicked();
                 break;
 
         }
