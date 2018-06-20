@@ -3,39 +3,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.BookmarkFragment">
+    tools:context=".BookmarkFragment">
 
     <Button
         android:id="@+id/punchIn"
         android:layout_width="150dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="97dp"
+        android:background="#6BCE00"
+        android:textColor="#3C748B"
         android:text="Punch In" />
 
     <Button
         android:id="@+id/absent"
         android:layout_width="150dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_below="@+id/punchIn"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:layout_toLeftOf="@+id/punchIn"
+        android:background="#FFEC4A"
+        android:textColor="#E0743B"
+      android:layout_alignParentLeft="true"
         android:text="Absent" />
 
     <Button
         android:id="@+id/holiday"
         android:layout_width="150dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_below="@+id/punchIn"
         android:layout_centerHorizontal="true"
-        android:layout_toRightOf="@+id/punchIn"
+        android:layout_marginTop="20dp"
+        android:background="#D85036"
+        android:textColor="#F4C044"
+        android:layout_alignParentRight="true"
         android:text="Holiday" />
 
     <Button
         android:id="@+id/punchOut"
         android:layout_width="150dp"
-        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="80dp"
         android:layout_below="@+id/absent"
+        android:background="#315FAA"
+        android:textColor="#59AE32"
         android:layout_centerHorizontal="true"
         android:text="Punch Out" />
 

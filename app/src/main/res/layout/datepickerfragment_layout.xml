@@ -7,26 +7,83 @@
     <Button
         android:id="@+id/working"
         android:layout_width="100dp"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
         android:layout_toLeftOf="@+id/absent"
+        android:background="@drawable/buttonbackground"
+        android:padding="5dp"
         android:text="Working" />
 
     <Button
         android:id="@+id/absent"
         android:layout_width="100dp"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/buttonbackground"
+        android:layout_marginLeft="-5dp"
         android:layout_marginTop="70dp"
+        android:padding="5dp"
         android:text="Absent" />
 
     <Button
         android:id="@+id/holiday"
         android:layout_width="100dp"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-5dp"
+        android:background="@drawable/buttonbackground"
         android:layout_marginTop="70dp"
         android:layout_toRightOf="@+id/absent"
+        android:padding="5dp"
 
         android:text="Holiday" />
+
+    <TextView
+
+        android:id="@+id/timeInTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/holiday"
+        android:text="Time In" />
+
+    <EditText
+        android:id="@+id/timeInEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+
+        android:layout_below="@+id/holiday"
+        android:layout_toEndOf="@+id/timeInTextView" />
+
+    <TextView
+        android:id="@+id/timeOutTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timeInTextView"
+
+
+        android:layout_marginTop="50dp"
+
+        android:text="Time Out" />
+
+    <EditText
+        android:id="@+id/timeOutEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timeInTextView"
+        android:layout_marginLeft="20dp"
+
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@+id/timeOutTextView" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="12dp"
+        android:background="@color/buttonBlue"
+        />
 
 </RelativeLayout>
