@@ -4,13 +4,13 @@
     <item
         android:id="@+id/action_bookmarks"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/bookmark"
         android:title="@string/text_bookmarks"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_history"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/icon_timer"
         android:title="@string/text_history"
         app:showAsAction="ifRoom" />
 </menu>

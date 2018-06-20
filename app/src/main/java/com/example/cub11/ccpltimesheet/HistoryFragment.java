@@ -16,7 +16,7 @@ import android.widget.Toast;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HistoryFragment extends Fragment implements View.OnClickListener
+public class HistoryFragment extends Fragment
 
 {
     public HistoryFragment() {
@@ -33,32 +33,27 @@ public class HistoryFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.historyfragment,
+         View view = inflater.inflate(R.layout.historyfragment,
                 container, false);
 
 
-        ImageButton button = (ImageButton) view.findViewById(R.id.closeButton);
-
-
+        ImageView button = (ImageView) view.findViewById(R.id.closeButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("Harsh","Sidana");
-                BookmarkFragment fragment2 = new BookmarkFragment();
+
+                DatePickerFragment fragment2 = new DatePickerFragment();
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction =  fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, fragment2);
+                fragmentTransaction.replace(R.id.frame_layout, fragment2);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+
             }
         });
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.historyfragment, container, false);
+        return view;
     }
 
-    @Override
-    public void onClick(View view) {
-
-    }
 }
