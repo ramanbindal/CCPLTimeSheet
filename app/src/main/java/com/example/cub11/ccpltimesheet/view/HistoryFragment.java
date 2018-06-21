@@ -59,20 +59,7 @@ public class HistoryFragment extends Fragment implements RecyclerItemTouchHelper
         final View view = inflater.inflate(R.layout.historyfragment, container, false);
 
 
-        ImageView button = (ImageView) view.findViewById(R.id.closeButton);
 
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerFragment fragment2 = new DatePickerFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout, fragment2);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
-        });
 
         MainActivity activity = (MainActivity) getActivity();
         attendanceItemList = activity.getAttendanceItemList();

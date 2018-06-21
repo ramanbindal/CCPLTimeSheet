@@ -5,12 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#ffffff">
+<ImageView
+    android:id="@+id/backButtton"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:src="@drawable/back"
+    android:layout_gravity="left"
+    />
+        <ImageView
+            android:id="@+id/toolbarbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            android:src="@drawable/add"
+            android:layout_marginRight="15dp"
+            android:layout_gravity="right"/>
 
+    </android.support.v7.widget.Toolbar>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="56dp"
+        android:background="@color/grey"
+        ></View>
     <!-- Content Container -->
     <FrameLayout
         android:id="@+id/frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="58dp"
         android:layout_above="@+id/bottom_navigation"
         android:animateLayoutChanges="true">
 
@@ -21,7 +49,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        app:itemIconTint="@drawable/nav_item_color_state"
+        app:itemTextColor="@drawable/nav_item_color_state"
         app:menu="@menu/main" />
+
+    <TextView
+        android:id="@+id/tabText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
+        android:foregroundGravity="center"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:text="Timeline" />
 
 
 </RelativeLayout>

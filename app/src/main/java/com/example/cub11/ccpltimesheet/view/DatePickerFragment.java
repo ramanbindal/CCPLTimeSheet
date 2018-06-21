@@ -12,6 +12,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.cub11.ccpltimesheet.R;
@@ -52,11 +54,23 @@ public class DatePickerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.datepickerfragment_layout, container, false);
         // Inflate the layout for this fragment
+        final ImageView button = (ImageView) getActivity().findViewById(R.id.toolbarbtn);
+        final TextView tabText = (TextView) getActivity().findViewById(R.id.tabText);
+        final ImageView backButton = (ImageView) getActivity().findViewById(R.id.backButtton);
+
+        button.setEnabled(false);
+        button.setVisibility(View.INVISIBLE);
+        tabText.setText("Add Item");
+        backButton.setEnabled(true);
+        backButton.setVisibility(View.VISIBLE);
 
 
         final Button working = (Button) view.findViewById(R.id.working);
         final Button absent = (Button) view.findViewById(R.id.absent);
         final Button holiday = (Button) view.findViewById(R.id.holiday);
+        working.setBackgroundColor(COLOR_BLUE);
+        holiday.setBackgroundColor(COLOR_WHITE);
+        absent.setBackgroundColor(COLOR_WHITE);
         working.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
