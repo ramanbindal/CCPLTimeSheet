@@ -66,10 +66,10 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.My
             holder.inTime.setText(item.getInTime());
             holder.outTime.setText(item.getOutTime());
 
-            if (item.getType().equals("HOLIDAY")) {
+            if (item.getType().equalsIgnoreCase(Const.HOLIDAY)) {
                 holder.inTime.setTextColor(Color.BLUE);
                 holder.outTime.setTextColor(Color.BLUE);
-            } else if (item.getType().equals("ABSENT")) {
+            } else if (item.getType().equalsIgnoreCase(Const.ABSENT)) {
                 holder.inTime.setTextColor(Color.RED);
                 holder.outTime.setTextColor(Color.RED);
             }

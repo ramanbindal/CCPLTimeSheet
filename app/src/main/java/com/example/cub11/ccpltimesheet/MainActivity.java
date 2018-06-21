@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private DbOpenHelper db;
     private String selectedFragment = "";
     private List<AttendanceItem> attendanceItemList;
-
+    private ImageView frwdButton, backButton;
+    private TextView tabtext;
 
     BottomNavigationView bottomNavigationView;
 
@@ -53,23 +54,18 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         attendanceItemList = new ArrayList<>();
-        final ImageView button = (ImageView) findViewById(R.id.toolbarbtn);
-        final TextView tabtext = (TextView) findViewById(R.id.tabText);
-        final ImageView backButton = (ImageView) findViewById(R.id.backButtton);
+        frwdButton = (ImageView) findViewById(R.id.toolbarbtn);
+        tabtext = (TextView) findViewById(R.id.tabText);
+        backButton = (ImageView) findViewById(R.id.backButtton);
 
-        tabtext.setText("");
+        toolbarVisibilityManager(Const.BookmarkFragment);
 
-
-        button.setEnabled(false);
-        button.setVisibility(View.INVISIBLE);
-        backButton.setEnabled(false);
-        backButton.setVisibility(View.INVISIBLE);
 
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, BookmarkFragment.newInstance());
         transaction.commit();
-        selectedFragment = "Bookmark";
+        selectedFragment = Const.BookmarkFragment;
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -77,34 +73,22 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_bookmarks: {
-                        if (!selectedFragment.equalsIgnoreCase("Bookmark")) {
+                        if (!selectedFragment.equalsIgnoreCase(Const.BookmarkFragment)) {
                             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                             transaction.replace(R.id.frame_layout, BookmarkFragment.newInstance());
-                            transaction.addToBackStack("fragmentbookmark");
                             transaction.commit();
-                            selectedFragment = "Bookmark";
-                            button.setEnabled(false);
-                            button.setVisibility(View.INVISIBLE);
-                            tabtext.setVisibility(View.INVISIBLE);
-                            backButton.setVisibility(View.INVISIBLE);
-                            backButton.setEnabled(false);
-
-
+                            selectedFragment = Const.BookmarkFragment;
+                            toolbarVisibilityManager(Const.BookmarkFragment);
                         }
                         break;
                     }
                     case R.id.action_history: {
-                        if (!selectedFragment.equalsIgnoreCase("History")) {
+                        if (!selectedFragment.equalsIgnoreCase(Const.HistoryFragment)) {
                             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                             transaction.replace(R.id.frame_layout, HistoryFragment.newInstance());
                             transaction.commit();
-                            selectedFragment = "History";
-                            button.setEnabled(true);
-                            button.setVisibility(View.VISIBLE);
-                            tabtext.setVisibility(View.VISIBLE);
-                            tabtext.setText("Timeline");
-                            backButton.setVisibility(View.INVISIBLE);
-                            backButton.setEnabled(false);
+                            selectedFragment = Const.HistoryFragment;
+                            toolbarVisibilityManager(Const.HistoryFragment);
                         }
                         break;
                     }
@@ -118,50 +102,71 @@ public class MainActivity extends AppCompatActivity {
         db = new DbOpenHelper(this);
         attendanceItemList = db.getAllAttendanceItems();
 
-//        Log.e("raman", "list " + attendanceItemList.size());
-//        if (attendanceItemList.isEmpty()) {
-//            attendanceItemList.add(new AttendanceItem(1, "12-25-2014", "12-25-2014", "09:00", "12:02:12", "08:22:12", "ABSENT", 2344213, 132233));
-//            attendanceItemList.add(new AttendanceItem(2, "12-25-2014", "12-25-2014", "09:00", "12:02:12", "08:22:12", "HOLIDAY", 234421233, 3423123));
-//        }
 
-
-        button.setOnClickListener(new View.OnClickListener() {
+        frwdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, DatePickerFragment.newInstance());
-                transaction.addToBackStack("FragmentB");
+                transaction.addToBackStack(null);
                 transaction.commit();
 
             }
         });
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getSupportFragmentManager();
+                if (fm.getBackStackEntryCount() > 0) {
+                    fm.popBackStack();
+                }
+            }
+        });
 
+    }
+
+    public void toolbarVisibilityManager(String fragmentName) {
+        switch (fragmentName) {
+            case Const.BookmarkFragment:
+                frwdButton.setEnabled(false);
+                backButton.setEnabled(false);
+                tabtext.setText("Mark Your Attendance");
+                tabtext.setVisibility(View.VISIBLE);
+                frwdButton.setVisibility(View.INVISIBLE);
+                backButton.setVisibility(View.INVISIBLE);
+                break;
+
+            case Const.HistoryFragment:
+                frwdButton.setEnabled(true);
+                frwdButton.setVisibility(View.VISIBLE);
+                tabtext.setVisibility(View.VISIBLE);
+                tabtext.setText("Timeline");
+                backButton.setVisibility(View.INVISIBLE);
+                backButton.setEnabled(false);
+                break;
+            case Const.DatePickerFragment:
+                frwdButton.setEnabled(false);
+                frwdButton.setVisibility(View.INVISIBLE);
+                tabtext.setVisibility(View.VISIBLE);
+                tabtext.setText("Add Item");
+                backButton.setEnabled(true);
+                backButton.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     public List<AttendanceItem> getAttendanceItemList() {
         return attendanceItemList;
     }
 
-    public void setAttendanceItemList(List<AttendanceItem> attendanceItemList) {
-        this.attendanceItemList = attendanceItemList;
-    }
-
-
-    @Override
-    protected void onStop() {
-        db.deleteAllRecords();
-        db.insertAttendanceItemList(attendanceItemList);
-        Log.e("raman", "list destroy " + db.getAllAttendanceItems());
-        super.onStop();
-    }
 
     public void onAbsentClicked() {
-        attendanceItemList.add(new AttendanceItem(getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "ABSENT", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
+        attendanceItemList.add(new AttendanceItem(getFinalDate(), getFinalDate(), Const.DefaultTotalTime, Const.DefaultPunchInTime, Const.DefaultPunchOutTime, Const.ABSENT, (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
         showAlertDialog("Absent marked!", getApplicationContext());
     }
 
     public void onHolidayClicked() {
-        attendanceItemList.add(new AttendanceItem(getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "HOLIDAY", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
+        attendanceItemList.add(new AttendanceItem(getFinalDate(), getFinalDate(), Const.DefaultTotalTime, Const.DefaultPunchInTime, Const.DefaultPunchOutTime, Const.HOLIDAY, (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
         showAlertDialog("Holiday marked!", getApplicationContext());
     }
 
@@ -170,20 +175,9 @@ public class MainActivity extends AppCompatActivity {
         String outTime = "-:-:-";
         String totalTime = "";
 
-        attendanceItemList.add(new AttendanceItem(getFinalDate(), getFinalDate(), totalTime, inTime, outTime, "PUNCH_IN", (Calendar.getInstance().getTime()).getTime(), -1L));
-        showAlertDialog("punch in time marked!", getApplicationContext());
+        attendanceItemList.add(new AttendanceItem(getFinalDate(), getFinalDate(), totalTime, inTime, outTime, Const.PUNCH_IN, (Calendar.getInstance().getTime()).getTime(), -1L));
+        showAlertDialog("Punch In time marked!", getApplicationContext());
 
-    }
-    public  void showAlertDialog(String message, Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(message).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //do things
-                dialog.dismiss();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 
     public void onPunchOutClicked() {
@@ -214,22 +208,29 @@ public class MainActivity extends AppCompatActivity {
             String outTime = getCurrentTime();
             String totalTime = "";
 
-            attendanceItemList.add(new AttendanceItem(getFinalDate(), getFinalDate(), totalTime, inTime, outTime, "PUNCH_OUT", (Calendar.getInstance().getTime()).getTime(), -1L));
+            attendanceItemList.add(new AttendanceItem(getFinalDate(), getFinalDate(), totalTime, inTime, outTime, Const.PUNCH_OUT, (Calendar.getInstance().getTime()).getTime(), -1L));
         }
-        showAlertDialog("punch out time marked!", getApplicationContext());
+        showAlertDialog("Punch out time marked!", getApplicationContext());
 
     }
 
-
+    public void showAlertDialog(String message, Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //do things
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 
     @Override
-    public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
-        } else {
-            super.onBackPressed();
-        }
-
+    protected void onStop() {
+        db.deleteAllRecords();
+        db.insertAttendanceItemList(attendanceItemList);
+        super.onStop();
     }
 }
 

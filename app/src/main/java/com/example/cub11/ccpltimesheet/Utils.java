@@ -17,6 +17,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Utils {
 
+
+
     public static String getCurrentTime() {
         Date currentTime = Calendar.getInstance().getTime();
         DateFormat date = new SimpleDateFormat("hh:mm:ss a");

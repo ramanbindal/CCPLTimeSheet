@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.cub11.ccpltimesheet.AttendanceAdapter;
+import com.example.cub11.ccpltimesheet.Const;
 import com.example.cub11.ccpltimesheet.MainActivity;
 import com.example.cub11.ccpltimesheet.R;
 import com.example.cub11.ccpltimesheet.RecyclerItemTouchHelper;
@@ -59,11 +60,9 @@ public class HistoryFragment extends Fragment implements RecyclerItemTouchHelper
         final View view = inflater.inflate(R.layout.historyfragment, container, false);
 
 
-
-
         MainActivity activity = (MainActivity) getActivity();
         attendanceItemList = activity.getAttendanceItemList();
-
+        activity.toolbarVisibilityManager(Const.HistoryFragment);
         setUpRecyclerView(view);
 
 

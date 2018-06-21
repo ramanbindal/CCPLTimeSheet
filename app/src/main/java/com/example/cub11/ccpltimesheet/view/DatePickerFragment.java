@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.cub11.ccpltimesheet.Const;
 import com.example.cub11.ccpltimesheet.MainActivity;
 import com.example.cub11.ccpltimesheet.R;
 import com.example.cub11.ccpltimesheet.database.model.AttendanceItem;
@@ -42,7 +43,7 @@ public class DatePickerFragment extends Fragment {
     EditText timeInEdit;
     EditText timeOutEdit;
     Button doneBtn;
-    String state = "working";
+    String state = Const.WORKING_DAY;
     String amPMTime = "";
     String finalTimeInStr = "";
     String finalTimeOutStr = "";
@@ -69,20 +70,12 @@ public class DatePickerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.datepickerfragment_layout, container, false);
         // Inflate the layout for this fragment
-        final ImageView button = (ImageView) getActivity().findViewById(R.id.toolbarbtn);
-        final TextView tabText = (TextView) getActivity().findViewById(R.id.tabText);
-        final ImageView backButton = (ImageView) getActivity().findViewById(R.id.backButtton);
-
-        button.setEnabled(false);
-        button.setVisibility(View.INVISIBLE);
-        tabText.setText("Add Item");
-        backButton.setEnabled(true);
-        backButton.setVisibility(View.VISIBLE);
 
 
         final Button working = (Button) view.findViewById(R.id.working);
         final Button absent = (Button) view.findViewById(R.id.absent);
         final Button holiday = (Button) view.findViewById(R.id.holiday);
+
         doneBtn = view.findViewById(R.id.doneButton);
         working.setBackgroundColor(COLOR_BLUE);
         holiday.setBackgroundColor(COLOR_WHITE);
@@ -90,7 +83,7 @@ public class DatePickerFragment extends Fragment {
         working.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                state = "working";
+                state = Const.WORKING_DAY;
                 working.setBackgroundColor(COLOR_BLUE);
                 holiday.setBackgroundColor(COLOR_WHITE);
                 absent.setBackgroundColor(COLOR_WHITE);
@@ -99,7 +92,7 @@ public class DatePickerFragment extends Fragment {
         absent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                state = "absent";
+                state = Const.ABSENT;
                 absent.setBackgroundColor(COLOR_BLUE);
                 working.setBackgroundColor(COLOR_WHITE);
                 holiday.setBackgroundColor(COLOR_WHITE);
@@ -108,7 +101,7 @@ public class DatePickerFragment extends Fragment {
         holiday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                state = "holiday";
+                state = Const.HOLIDAY;
                 holiday.setBackgroundColor(COLOR_BLUE);
                 absent.setBackgroundColor(COLOR_WHITE);
                 working.setBackgroundColor(COLOR_WHITE);
@@ -156,6 +149,9 @@ public class DatePickerFragment extends Fragment {
             }
         });
 
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.toolbarVisibilityManager(Const.DatePickerFragment);
+
         return view;
     }
 
@@ -163,7 +159,7 @@ public class DatePickerFragment extends Fragment {
         MainActivity mainActivity = (MainActivity) getActivity();
         AttendanceItem attendanceItem = new AttendanceItem();
 
-        if (state.equalsIgnoreCase("working")) {
+        if (state.equalsIgnoreCase(Const.WORKING_DAY)) {
             if (timeInEdit.getText().toString().isEmpty()) {
                 showAlertDialog("Please select Punch In Time !", false);
             } else if (timeOutEdit.getText().toString().isEmpty()) {
@@ -173,26 +169,26 @@ public class DatePickerFragment extends Fragment {
                 String[] tempStrOut = finalTimeOutStr.split(", ");
                 long inOutTimeDiff = Math.abs(outTimeInMillis - inTimeInMillis);
                 mainActivity.getAttendanceItemList().add(new AttendanceItem(tempStrIn[0], tempStrOut[0], makeTimeDiff(inOutTimeDiff), tempStrIn[1],
-                        tempStrOut[1], "CHECKINOUT", inTimeInMillis, outTimeInMillis));
+                        tempStrOut[1], Const.WORKING_DAY, inTimeInMillis, outTimeInMillis));
                 showAlertDialog("Attendance Marked!", true);
             }
-        } else if (state.equalsIgnoreCase("absent")) {
+        } else if (state.equalsIgnoreCase(Const.ABSENT)) {
             if (timeInEdit.getText().toString().isEmpty()) {
                 showAlertDialog("Please select Date to mark Absent !", false);
             } else {
 
                 String[] tempStrIn = finalTimeInStr.split(", ");
-                mainActivity.getAttendanceItemList().add(new AttendanceItem(tempStrIn[0], tempStrIn[0], "09:00", "09:00:00 AM", "06:00:00 PM", "ABSENT", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
+                mainActivity.getAttendanceItemList().add(new AttendanceItem(tempStrIn[0], tempStrIn[0], Const.DefaultTotalTime, Const.DefaultPunchInTime, Const.DefaultPunchOutTime, Const.ABSENT, (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
                 showAlertDialog("Absent marked!", true);
             }
-        } else if (state.equalsIgnoreCase("holiday")) {
+        } else if (state.equalsIgnoreCase(Const.HOLIDAY)) {
 
             if (timeInEdit.getText().toString().isEmpty()) {
                 showAlertDialog("Please select Date to mark Holiday !", false);
             } else {
 
                 String[] tempStrIn = finalTimeInStr.split(", ");
-                mainActivity.getAttendanceItemList().add(new AttendanceItem(tempStrIn[0], tempStrIn[0], "09:00", "09:00:00 AM", "06:00:00 PM", "HOLIDAY", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
+                mainActivity.getAttendanceItemList().add(new AttendanceItem(tempStrIn[0], tempStrIn[0], Const.DefaultTotalTime, Const.DefaultPunchInTime, Const.DefaultPunchOutTime, Const.HOLIDAY, (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
                 showAlertDialog("Holiday marked!", true);
             }
         }
@@ -267,7 +263,6 @@ public class DatePickerFragment extends Fragment {
             }
             String[] strArray = date.toString().split(" ");
             str = strArray[1] + " " + strArray[2] + " " + strArray[5] + ", " + amPMTime;
-            Log.e("Harsh", date.toString() + " " + date.getTime() + "final String " + str);
         } catch (ParseException e) {
             e.printStackTrace();
         }
