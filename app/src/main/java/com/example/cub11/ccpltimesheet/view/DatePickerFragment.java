@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,39 +78,39 @@ public class DatePickerFragment extends Fragment {
         final Button holiday = (Button) view.findViewById(R.id.holiday);
 
         doneBtn = view.findViewById(R.id.doneButton);
-        working.setBackgroundColor(COLOR_BLUE);
-        holiday.setBackgroundColor(COLOR_WHITE);
-        absent.setBackgroundColor(COLOR_WHITE);
+        working.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackground) );
+        holiday.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
+        absent.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
         working.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 state = Const.WORKING_DAY;
-                working.setBackgroundColor(COLOR_BLUE);
-                holiday.setBackgroundColor(COLOR_WHITE);
-                absent.setBackgroundColor(COLOR_WHITE);
+                working.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackground) );
+                holiday.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
+                absent.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
             }
         });
         absent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 state = Const.ABSENT;
-                absent.setBackgroundColor(COLOR_BLUE);
-                working.setBackgroundColor(COLOR_WHITE);
-                holiday.setBackgroundColor(COLOR_WHITE);
+                working.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
+                holiday.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
+                absent.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackground) );
             }
         });
         holiday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                working.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
+                holiday.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackground) );
+                absent.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
                 state = Const.HOLIDAY;
-                holiday.setBackgroundColor(COLOR_BLUE);
-                absent.setBackgroundColor(COLOR_WHITE);
-                working.setBackgroundColor(COLOR_WHITE);
 
             }
         });
 
-        working.setBackgroundColor(COLOR_BLUE);
+        //working.setBackgroundColor(COLOR_BLUE);
         timeInEdit = (EditText) view.findViewById(R.id.timeInEditText);
         timeOutEdit = (EditText) view.findViewById(R.id.timeOutEditText);
         timeInEdit.setOnClickListener(new View.OnClickListener() {
