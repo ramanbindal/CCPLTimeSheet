@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     private DbOpenHelper db;
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onAbsentClicked() {
-        attendanceItemList.add(new AttendanceItem( getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "ABSENT", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
+        attendanceItemList.add(new AttendanceItem(getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "ABSENT", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
         showAlertDialog("Absent marked!");
     }
 
@@ -209,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onHolidayClicked() {
-        attendanceItemList.add(new AttendanceItem( getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "HOLIDAY", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
+        attendanceItemList.add(new AttendanceItem(getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "HOLIDAY", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
         showAlertDialog("Holiday marked!");
     }
 
@@ -218,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         String outTime = "-:-:-";
         String totalTime = "";
 
-        attendanceItemList.add(new AttendanceItem( getFinalDate(), getFinalDate(), totalTime, inTime, outTime, "PUNCH_IN", (Calendar.getInstance().getTime()).getTime(), -1L));
+        attendanceItemList.add(new AttendanceItem(getFinalDate(), getFinalDate(), totalTime, inTime, outTime, "PUNCH_IN", (Calendar.getInstance().getTime()).getTime(), -1L));
         showAlertDialog("punch in time marked!");
 
     }
@@ -250,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
             //update the existing record
             targetItem.setOutTime(getCurrentTime());
             targetItem.setOutMilliSeconds(currentMilliSeconds);
-            String totalTime = String.valueOf((float) (targetItem.getOutMilliSeconds() - targetItem.getInMilliSeconds()) / (1000 * 3600));
+            String totalTime = makeTimeDiff((targetItem.getOutMilliSeconds() - targetItem.getInMilliSeconds()));
             targetItem.setTotalTime(totalTime);
         } else {
             //create a new record
@@ -258,10 +259,15 @@ public class MainActivity extends AppCompatActivity {
             String outTime = getCurrentTime();
             String totalTime = "";
 
-            attendanceItemList.add(new AttendanceItem( getFinalDate(), getFinalDate(), totalTime, inTime, outTime, "PUNCH_OUT", (Calendar.getInstance().getTime()).getTime(), -1L));
+            attendanceItemList.add(new AttendanceItem(getFinalDate(), getFinalDate(), totalTime, inTime, outTime, "PUNCH_OUT", (Calendar.getInstance().getTime()).getTime(), -1L));
         }
         showAlertDialog("punch out time marked!");
 
+    }
+
+    private String makeTimeDiff(long timeInMillis) {
+        return String.format("%02d:%02d", TimeUnit.MILLISECONDS.toHours(timeInMillis),
+                TimeUnit.MILLISECONDS.toMinutes(timeInMillis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeInMillis)));
     }
 
 
