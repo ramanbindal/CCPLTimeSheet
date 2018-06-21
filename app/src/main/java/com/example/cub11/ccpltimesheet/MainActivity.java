@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private String selectedFragment = "";
     private List<AttendanceItem> attendanceItemList;
 
-    static int listIndex = 1;
 
     BottomNavigationView bottomNavigationView;
 
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         Collections.sort(attendanceItemList, new Comparator<AttendanceItem>() {
             @Override
             public int compare(AttendanceItem o1, AttendanceItem o2) {
-                return Long.valueOf(o1.getMilliSeconds()).compareTo(Long.valueOf(o2.getMilliSeconds()));
+                return 0;
             }
         });
     }
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onAbsentClicked() {
-        attendanceItemList.add(new AttendanceItem(listIndex++, getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "ABSENT", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
+        attendanceItemList.add(new AttendanceItem( getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "ABSENT", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
         showAlertDialog("Absent marked!");
     }
 
@@ -210,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onHolidayClicked() {
-        attendanceItemList.add(new AttendanceItem(listIndex++, getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "HOLIDAY", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
+        attendanceItemList.add(new AttendanceItem( getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "HOLIDAY", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
         showAlertDialog("Holiday marked!");
     }
 
@@ -219,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         String outTime = "-:-:-";
         String totalTime = "";
 
-        attendanceItemList.add(new AttendanceItem(listIndex++, getFinalDate(), getFinalDate(), totalTime, inTime, outTime, "PUNCH_IN", (Calendar.getInstance().getTime()).getTime(), -1L));
+        attendanceItemList.add(new AttendanceItem( getFinalDate(), getFinalDate(), totalTime, inTime, outTime, "PUNCH_IN", (Calendar.getInstance().getTime()).getTime(), -1L));
         showAlertDialog("punch in time marked!");
 
     }
@@ -259,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
             String outTime = getCurrentTime();
             String totalTime = "";
 
-            attendanceItemList.add(new AttendanceItem(listIndex++, getFinalDate(), getFinalDate(), totalTime, inTime, outTime, "PUNCH_IN", (Calendar.getInstance().getTime()).getTime(), -1L));
+            attendanceItemList.add(new AttendanceItem( getFinalDate(), getFinalDate(), totalTime, inTime, outTime, "PUNCH_OUT", (Calendar.getInstance().getTime()).getTime(), -1L));
         }
         showAlertDialog("punch out time marked!");
 

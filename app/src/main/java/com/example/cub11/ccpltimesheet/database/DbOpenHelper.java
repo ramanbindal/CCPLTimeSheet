@@ -28,11 +28,12 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     private String createAttendanceItemDb() {
 
         return "CREATE TABLE " + AttendanceItem.TABLE + " (" +
-                AttendanceItem.ID + " LONG PRIMARY KEY AUTOINCREMENT," +
+                AttendanceItem.ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 AttendanceItem.IN_TIME + " TEXT  NULL, " +
                 AttendanceItem.OUT_TIME + " TEXT  NULL, " +
                 AttendanceItem.TYPE + " TEXT  NULL, " +
                 AttendanceItem.IN_DATE + " TEXT NULL, " +
+                AttendanceItem.MILLISECONDS+" TEXT NULL,"+
                 AttendanceItem.OUT_DATE + " TEXT NULL, " +
                 AttendanceItem.TOTAL_TIME + " TEXT NULL " +
                 " );";
@@ -56,6 +57,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
                 .inTime(attendanceItem.getInTime())
                 .outTime(attendanceItem.getOutTime())
                 .totalTime(attendanceItem.getTotalTime())
+                .inMilliSeconds(attendanceItem.getInMilliSeconds())
                 .type(attendanceItem.getType())
                 .build();
         long id = db.insert(AttendanceItem.TABLE, null, attendanceBuider);
@@ -74,6 +76,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
                     .inDate(attendanceItem.getInDate())
                     .inTime(attendanceItem.getInTime())
                     .outTime(attendanceItem.getOutTime())
+                    .inMilliSeconds(attendanceItem.getInMilliSeconds())
                     .totalTime(attendanceItem.getTotalTime())
                     .type(attendanceItem.getType())
                     .build();

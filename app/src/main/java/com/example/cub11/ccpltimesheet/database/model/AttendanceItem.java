@@ -36,20 +36,12 @@ public class AttendanceItem implements Comparable {
         this.inTime = inTime;
         this.outTime = outTime;
         this.type = type;
-        this.milliSeconds = milliSeconds;
-    }
-
-    public long getMilliSeconds() {
-        return milliSeconds;
-    }
-
-    public void setMilliSeconds(long milliSeconds) {
-        this.milliSeconds = milliSeconds;
+        this.inMilliSeconds = milliSeconds;
     }
 
 
-    public AttendanceItem(long id, String inDate, String outDate, String totalTime, String inTime, String outTime, String type, long inMilliSeconds, long outMilliSeconds) {
-        this.id = id;
+
+    public AttendanceItem(String inDate, String outDate, String totalTime, String inTime, String outTime, String type, long inMilliSeconds, long outMilliSeconds) {
         this.inDate = inDate;
         this.outDate = outDate;
         this.totalTime = totalTime;
@@ -180,8 +172,8 @@ public class AttendanceItem implements Comparable {
             values.put(OUT_TIME, outTime);
             return this;
         }
-        public Builder milliSeconds(long milliSeconds) {
-            values.put(MILLISECONDS, milliSeconds);
+        public Builder inMilliSeconds(long inMilliSeconds) {
+            values.put(MILLISECONDS, inMilliSeconds);
             return this;
         }
 

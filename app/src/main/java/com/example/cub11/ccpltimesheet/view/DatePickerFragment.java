@@ -139,8 +139,8 @@ public class DatePickerFragment extends Fragment {
     private void onDoneClicked() {
         MainActivity mainActivity = (MainActivity) getActivity();
         AttendanceItem attendanceItem=new AttendanceItem();
-        if (state.equalsIgnoreCase("working")) {
 
+        if (state.equalsIgnoreCase("working")) {
             if (timeInEdit.getText().toString().isEmpty() || timeOutEdit.getText().toString().isEmpty()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage("Please Select Time !")
@@ -158,6 +158,7 @@ public class DatePickerFragment extends Fragment {
 
             }
         } else if (state.equalsIgnoreCase("absent")) {
+
 
         } else if (state.equalsIgnoreCase("holiday")) {
 
