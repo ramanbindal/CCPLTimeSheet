@@ -164,7 +164,7 @@ public class DatePickerFragment extends Fragment {
 
                 String[] tempStrIn = finalTimeInStr.split(", ");
                 String[] tempStrOut = finalTimeOutStr.split(", ");
-                long inOutTimeDiff = outTimeInMillis - inTimeInMillis;
+                long inOutTimeDiff = Math.abs(outTimeInMillis - inTimeInMillis);
                 mainActivity.getAttendanceItemList().add(new AttendanceItem(tempStrIn[0], tempStrOut[0], makeTimeDiff(inOutTimeDiff), tempStrIn[1], tempStrOut[1], "CHECKINOUT", inTimeInMillis, outTimeInMillis));
 
                 showAlertDialog("Attendance Marked!");
@@ -177,7 +177,7 @@ public class DatePickerFragment extends Fragment {
             mainActivity.getAttendanceItemList().add(new AttendanceItem(getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "HOLIDAY", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
             showAlertDialog("Holiday marked!");
         }
-//        mainActivity.addToAttachmentItemList(attendanceItem);
+        mainActivity.addToAttachmentItemList(attendanceItem);
     }
 
 
@@ -307,11 +307,13 @@ public class DatePickerFragment extends Fragment {
 
                 amPMTime = makeTime(hour, minute);
 
+                String amOrPm = findAmorPm(hour, minute);
+
                 String timeIn = "";
                 String timeOut = "";
 
                 if (time.equals("TimeIn")) {
-                    timeIn = day + "/" + month + "/" + year + " " + hour + ":" + minute + ":00";
+                    timeIn = day + "/" + month + "/" + year + " " + hour + ":" + minute + ":00 " + amOrPm;
                     String str = getFinalString(timeIn, 1);
                     finalTimeInStr = str;
                     timeInEdit.setText(str);
@@ -320,7 +322,7 @@ public class DatePickerFragment extends Fragment {
                 }
                 if (time.equalsIgnoreCase("TimeOut")) {
 
-                    timeOut = day + "/" + month + "/" + year + " " + " " + hour + ":" + minute + ":00";
+                    timeOut = day + "/" + month + "/" + year + " " + " " + hour + ":" + minute + ":00 " + amOrPm;
                     String str = getFinalString(timeOut, 2);
                     finalTimeOutStr = str;
                     timeOutEdit.setText(str);
@@ -331,6 +333,21 @@ public class DatePickerFragment extends Fragment {
         });
         dialog.show();
     }
+
+    private String findAmorPm(int hour, int minute) {
+        String timeSet = "";
+        if (hour > 12) {
+            timeSet = "PM";
+        } else if (hour == 0) {
+            timeSet = "AM";
+        } else if (hour == 12) {
+            timeSet = "PM";
+        } else {
+            timeSet = "AM";
+        }
+        return timeSet;
+    }
+
 
     public String makeTime(int hour, int minutes) {
         String timeSet = "";
@@ -359,7 +376,7 @@ public class DatePickerFragment extends Fragment {
 
     public String getFinalString(String time, int flag) {
         Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
         String str = "";
 
         try {
