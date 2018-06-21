@@ -182,7 +182,7 @@ public class DatePickerFragment extends Fragment {
                 showAlertDialog("Please select Date to mark Absent !", false);
             } else {
 
-                String[] tempStrIn = finalTimeInStr.split(", ");
+                String[] tempStrIn = finalTimeInStr.split(",");
                 mainActivity.getAttendanceItemList().add(new AttendanceItem(tempStrIn[0], tempStrIn[0], "09:00", "09:00:00 AM", "06:00:00 PM", "ABSENT", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
                 showAlertDialog("Absent marked!", true);
             }
@@ -267,13 +267,35 @@ public class DatePickerFragment extends Fragment {
                 outTimeInMillis = date.getTime();
             }
             String[] strArray = date.toString().split(" ");
-            str = strArray[1] + " " + strArray[2] + " " + strArray[5] + ", " + amPMTime;
+            String day = strArray[0];
+            String fullDayName = getFullDayName(day);
+            str = strArray[1] + " " + strArray[2] + " " + strArray[5] + "," + fullDayName + ", " + amPMTime;
             Log.e("Harsh", date.toString() + " " + date.getTime() + "final String " + str);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         return str;
+    }
+
+    private String getFullDayName(String day) {
+        switch (day) {
+            case "Mon":
+                return "Monday";
+            case "Tue":
+                return "Tuesday";
+            case "Wed":
+                return "Wednesday";
+            case "Thu":
+                return "Thursday";
+            case "Fri":
+                return "Friday";
+            case "Sat":
+                return "Saturday";
+            case "Sun":
+                return "Sunday";
+        }
+        return "";
     }
 
     public void showAlertDialog(String message, final Boolean toCloseFragment) {
