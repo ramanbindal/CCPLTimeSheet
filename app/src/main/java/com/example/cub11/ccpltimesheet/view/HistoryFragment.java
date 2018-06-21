@@ -11,25 +11,20 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.cub11.ccpltimesheet.AttendanceAdapter;
 import com.example.cub11.ccpltimesheet.MainActivity;
 import com.example.cub11.ccpltimesheet.R;
-
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-
 import com.example.cub11.ccpltimesheet.RecyclerItemTouchHelper;
 import com.example.cub11.ccpltimesheet.database.model.AttendanceItem;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -72,7 +67,7 @@ public class HistoryFragment extends Fragment implements RecyclerItemTouchHelper
             public void onClick(View view) {
                 DatePickerFragment fragment2 = new DatePickerFragment();
                 FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction =  fragmentManager.beginTransaction();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout, fragment2);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
@@ -92,6 +87,14 @@ public class HistoryFragment extends Fragment implements RecyclerItemTouchHelper
     private void setUpRecyclerView(View view) {
         linearLayout = view.findViewById(R.id.history_fragment_container);
         recyclerView = view.findViewById(R.id.history_fragment_rv);
+
+
+        Collections.sort(attendanceItemList, new Comparator<AttendanceItem>() {
+            public int compare(AttendanceItem o1, AttendanceItem o2) {
+                return o2.compareTo(o1);
+            }
+        });
+
         attendanceAdapter = new AttendanceAdapter(attendanceItemList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -104,8 +107,6 @@ public class HistoryFragment extends Fragment implements RecyclerItemTouchHelper
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
     }
-
-
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {

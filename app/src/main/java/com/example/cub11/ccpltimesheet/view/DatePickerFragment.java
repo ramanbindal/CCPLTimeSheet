@@ -199,7 +199,7 @@ public class DatePickerFragment extends Fragment {
                     timeIn = day + "/" + month + "/" + year + " " + hour + ":" + minute;
                     try {
                         date = simpleDateFormat.parse(timeIn);
-                        Log.d("Harsh", date.toString());
+                        Log.d("Harsh", date.toString() + " " + date.getTime());
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
