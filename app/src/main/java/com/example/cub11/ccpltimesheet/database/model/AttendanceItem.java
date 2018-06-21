@@ -2,6 +2,8 @@ package com.example.cub11.ccpltimesheet.database.model;
 
 import android.content.ContentValues;
 
+import java.util.Objects;
+
 public class AttendanceItem {
 
     public static final String TABLE = "attendance_item_table";
@@ -13,6 +15,7 @@ public class AttendanceItem {
     public static final String IN_TIME = "in_time";
     public static final String OUT_TIME = "out_time";
     public static final String TYPE = "type";
+    public static final String MILLISECONDS="milliseconds";
 
     private long id;
     private String inDate;
@@ -21,16 +24,27 @@ public class AttendanceItem {
     private String inTime;
     private String outTime;
     private String type;
+    private long milliSeconds;
 
+    public AttendanceItem() {
+    }
 
-    public AttendanceItem(long id, String inDate, String outDate, String totalTime, String inTime, String outTime, String type) {
-        this.id = id;
+    public AttendanceItem(String inDate, String outDate, String totalTime, String inTime, String outTime, String type, long milliSeconds) {
         this.inDate = inDate;
         this.outDate = outDate;
         this.totalTime = totalTime;
         this.inTime = inTime;
         this.outTime = outTime;
         this.type = type;
+        this.milliSeconds = milliSeconds;
+    }
+
+    public long getMilliSeconds() {
+        return milliSeconds;
+    }
+
+    public void setMilliSeconds(long milliSeconds) {
+        this.milliSeconds = milliSeconds;
     }
 
     public long getId() {
@@ -126,9 +140,36 @@ public class AttendanceItem {
             values.put(OUT_TIME, outTime);
             return this;
         }
+        public Builder milliSeconds(long milliSeconds) {
+            values.put(MILLISECONDS, milliSeconds);
+            return this;
+        }
+
+
 
         public ContentValues build() {
             return values;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AttendanceItem that = (AttendanceItem) o;
+        return id == that.id &&
+                milliSeconds == that.milliSeconds &&
+                Objects.equals(inDate, that.inDate) &&
+                Objects.equals(outDate, that.outDate) &&
+                Objects.equals(totalTime, that.totalTime) &&
+                Objects.equals(inTime, that.inTime) &&
+                Objects.equals(outTime, that.outTime) &&
+                Objects.equals(type, that.type);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, inDate, outDate, totalTime, inTime, outTime, type, milliSeconds);
     }
 }

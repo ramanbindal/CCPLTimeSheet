@@ -14,6 +14,8 @@ import com.example.cub11.ccpltimesheet.view.BookmarkFragment;
 import com.example.cub11.ccpltimesheet.view.HistoryFragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -68,15 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
         db = new DbOpenHelper(this);
         attendanceItemList = db.getAllAttendanceItems();
-
-        Log.e("raman", "list " + attendanceItemList.size());
-        if (attendanceItemList.isEmpty()) {
-            attendanceItemList.add(new AttendanceItem(1, "12-25-2014", "12-25-2014", "09:00", "12:02:12", "08:22:12", "ABSENT"));
-            attendanceItemList.add(new AttendanceItem(2, "12-25-2014", "12-25-2014", "09:00", "12:02:12", "08:22:12", "HOLIDAY"));
-            attendanceItemList.add(new AttendanceItem(3, "12-25-2014", "12-25-2014", "09:00", "12:02:12", "08:22:12", "dffdw"));
-            attendanceItemList.add(new AttendanceItem(4, "12-25-2014", "12-25-2014", "09:00", "12:02:12", "08:22:12", ""));
-        }
-
     }
 
     public List<AttendanceItem> getAttendanceItemList() {
@@ -87,6 +80,16 @@ public class MainActivity extends AppCompatActivity {
         this.attendanceItemList = attendanceItemList;
     }
 
+    public void addToAttachmentItemList(AttendanceItem attendanceItem) {
+        attendanceItemList.add(attendanceItem);
+
+        Collections.sort(attendanceItemList, new Comparator<AttendanceItem>() {
+            @Override
+            public int compare(AttendanceItem o1, AttendanceItem o2) {
+                return Long.valueOf(o1.getMilliSeconds()).compareTo(Long.valueOf(o2.getMilliSeconds()));
+            }
+        });
+    }
 
     @Override
     protected void onStop() {
