@@ -1,8 +1,9 @@
 package com.example.cub11.ccpltimesheet.database.model;
 
 import android.content.ContentValues;
+import android.support.annotation.NonNull;
 
-public class AttendanceItem {
+public class AttendanceItem implements Comparable {
 
     public static final String TABLE = "attendance_item_table";
 
@@ -21,6 +22,8 @@ public class AttendanceItem {
     private String inTime;
     private String outTime;
     private String type;
+    private long inMilliSeconds;
+    private long outMilliSeconds;
 
 
     public AttendanceItem(long id, String inDate, String outDate, String totalTime, String inTime, String outTime, String type) {
@@ -31,6 +34,19 @@ public class AttendanceItem {
         this.inTime = inTime;
         this.outTime = outTime;
         this.type = type;
+    }
+
+
+    public AttendanceItem(long id, String inDate, String outDate, String totalTime, String inTime, String outTime, String type, long inMilliSeconds, long outMilliSeconds) {
+        this.id = id;
+        this.inDate = inDate;
+        this.outDate = outDate;
+        this.totalTime = totalTime;
+        this.inTime = inTime;
+        this.outTime = outTime;
+        this.type = type;
+        this.inMilliSeconds = inMilliSeconds;
+        this.outMilliSeconds = outMilliSeconds;
     }
 
     public long getId() {
@@ -89,6 +105,33 @@ public class AttendanceItem {
         this.type = type;
     }
 
+
+    public long getInMilliSeconds() {
+        return inMilliSeconds;
+    }
+
+    public void setInMilliSeconds(long inMilliSeconds) {
+        this.inMilliSeconds = inMilliSeconds;
+    }
+
+    public long getOutMilliSeconds() {
+        return outMilliSeconds;
+    }
+
+    public void setOutMilliSeconds(long outMilliSeconds) {
+        this.outMilliSeconds = outMilliSeconds;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        long targetMilliSeconds = ((AttendanceItem) o).getInMilliSeconds();
+        if (this.inMilliSeconds <= targetMilliSeconds)
+            return -1;
+        else
+            return 1;
+    }
+
+
     public static final class Builder {
         private final ContentValues values = new ContentValues();
 
@@ -101,6 +144,7 @@ public class AttendanceItem {
             values.put(IN_DATE, inDate);
             return this;
         }
+
         public Builder outDate(String outDate) {
             values.put(OUT_DATE, outDate);
             return this;

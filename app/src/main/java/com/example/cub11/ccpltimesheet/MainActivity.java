@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private String selectedFragment = "";
     private List<AttendanceItem> attendanceItemList;
 
+    static int listIndex = 1;
+
     BottomNavigationView bottomNavigationView;
 
     @Override
@@ -75,13 +77,11 @@ public class MainActivity extends AppCompatActivity {
         db = new DbOpenHelper(this);
         attendanceItemList = db.getAllAttendanceItems();
 
-        Log.e("raman", "list " + attendanceItemList.size());
-        if (attendanceItemList.isEmpty()) {
-            attendanceItemList.add(new AttendanceItem(1, "12-25-2014", "12-25-2014", "09:00", "12:02:12", "08:22:12", "ABSENT"));
-            attendanceItemList.add(new AttendanceItem(2, "12-25-2014", "12-25-2014", "09:00", "12:02:12", "08:22:12", "HOLIDAY"));
-            attendanceItemList.add(new AttendanceItem(3, "12-25-2014", "12-25-2014", "09:00", "12:02:12", "08:22:12", "dffdw"));
-            attendanceItemList.add(new AttendanceItem(4, "12-25-2014", "12-25-2014", "09:00", "12:02:12", "08:22:12", ""));
-        }
+//        Log.e("raman", "list " + attendanceItemList.size());
+//        if (attendanceItemList.isEmpty()) {
+//            attendanceItemList.add(new AttendanceItem(1, "12-25-2014", "12-25-2014", "09:00", "12:02:12", "08:22:12", "ABSENT", 2344213, 132233));
+//            attendanceItemList.add(new AttendanceItem(2, "12-25-2014", "12-25-2014", "09:00", "12:02:12", "08:22:12", "HOLIDAY", 234421233, 3423123));
+//        }
 
     }
 
@@ -103,39 +103,152 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onAbsentClicked() {
+        attendanceItemList.add(new AttendanceItem(listIndex++, getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "ABSENT", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
+        showAlertDialog("Absent marked!");
+    }
 
+    private String getFinalDate() {
         Date currentTime = Calendar.getInstance().getTime();
-        DateFormat date = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat date = new SimpleDateFormat("hh:mm:ss");
         String localTime = date.format(currentTime);
 
 
-        Log.e("raman", "time " + localTime);
+        long milliSeconds = currentTime.getTime();
 
 
-//        long yourmilliseconds = System.currentTimeMillis();
-//        Date resultdate = new Date(yourmilliseconds);
-//        Log.e("raman", "time " + resultdate);
+        DateFormat yearOnly = new SimpleDateFormat("yyyy");
+        String yearValue = yearOnly.format(currentTime);
+        int dateValue = currentTime.getDate();
 
-        showAlertDialog("Absent marked!");
+        int monthIndex = currentTime.getMonth();
+        String monthName = "";
+        switch (monthIndex) {
+            case 0:
+                monthName = "Jan";
+                break;
+            case 1:
+                monthName = "Feb";
+                break;
+            case 2:
+                monthName = "Mar";
+                break;
+            case 3:
+                monthName = "Apr";
+                break;
+            case 4:
+                monthName = "May";
+                break;
+            case 5:
+                monthName = "Jun";
+                break;
+            case 6:
+                monthName = "Jul";
+                break;
+            case 7:
+                monthName = "Aug";
+                break;
+            case 8:
+                monthName = "Sep";
+                break;
+            case 9:
+                monthName = "Oct";
+                break;
+            case 10:
+                monthName = "Nov";
+                break;
+            case 11:
+                monthName = "Dec";
+                break;
+
+        }
 
 
+        int dayIndex = currentTime.getDay();
+        String dayName = "";
+        switch (dayIndex) {
+            case 0:
+                dayName = "Sunday";
+                break;
+            case 1:
+                dayName = "Monday";
+                break;
+            case 2:
+                dayName = "Tuesday";
+                break;
+            case 3:
+                dayName = "Wednesday";
+                break;
+            case 4:
+                dayName = "Thursday";
+                break;
+            case 5:
+                dayName = "Friday";
+                break;
+            case 6:
+                dayName = "Saturday";
+                break;
+        }
+
+        String finalDate = monthName + " " + dateValue + " " + yearValue + " , " + dayName;
+        Log.e("raman", "finalDate " + finalDate + " and local time is :" + localTime + " and time in milliseconds is : " + milliSeconds);
+
+
+        return finalDate;
     }
 
+
     public void onHolidayClicked() {
-        Date currentTime = Calendar.getInstance().getTime();
+        attendanceItemList.add(new AttendanceItem(listIndex++, getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "HOLIDAY", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
         showAlertDialog("Holiday marked!");
-
-
     }
 
     public void onPunchInClicked() {
-        Date currentTime = Calendar.getInstance().getTime();
+        String inTime = getCurrentTime();
+        String outTime = "-:-:-";
+        String totalTime = "";
+
+        attendanceItemList.add(new AttendanceItem(listIndex++, getFinalDate(), getFinalDate(), totalTime, inTime, outTime, "PUNCH_IN", (Calendar.getInstance().getTime()).getTime(), -1L));
         showAlertDialog("punch in time marked!");
 
     }
 
-    public void onPunchOutClicked() {
+    private String getCurrentTime() {
         Date currentTime = Calendar.getInstance().getTime();
+        DateFormat date = new SimpleDateFormat("hh:mm:ss a");
+        String localTime = date.format(currentTime);
+        return localTime;
+    }
+
+    public void onPunchOutClicked() {
+        //match this punch out with nearest punch in time
+
+        long diff = Long.MAX_VALUE;
+        AttendanceItem targetItem = null;
+        long currentMilliSeconds = (Calendar.getInstance().getTime()).getTime();
+        for (AttendanceItem item : attendanceItemList) {
+            if (item.getOutTime().equals("-:-:-")) {
+                long tempDiff = currentMilliSeconds - item.getInMilliSeconds();
+                if (tempDiff < diff) {
+                    diff = tempDiff;
+                    targetItem = item;
+                }
+            }
+        }
+
+        if (diff != Long.MAX_VALUE) {
+            //update the existing record
+            targetItem.setOutTime(getCurrentTime());
+            targetItem.setOutMilliSeconds(currentMilliSeconds);
+            String totalTime = String.valueOf((float) (targetItem.getOutMilliSeconds() - targetItem.getInMilliSeconds()) / (1000 * 3600));
+            targetItem.setTotalTime(totalTime);
+        } else {
+            //create a new record
+            String inTime = "-:-:-";
+            String outTime = getCurrentTime();
+            String totalTime = "";
+
+            attendanceItemList.add(new AttendanceItem(listIndex++, getFinalDate(), getFinalDate(), totalTime, inTime, outTime, "PUNCH_IN", (Calendar.getInstance().getTime()).getTime(), -1L));
+        }
         showAlertDialog("punch out time marked!");
 
     }

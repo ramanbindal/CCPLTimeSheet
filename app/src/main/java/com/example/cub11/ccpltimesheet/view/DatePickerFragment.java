@@ -32,6 +32,7 @@ public class DatePickerFragment extends Fragment {
     EditText timeOutEdit;
 
     private static final int COLOR_WHITE = Color.parseColor("#ffffff");
+
     public DatePickerFragment() {
         // Required empty public constructor
     }
@@ -53,9 +54,9 @@ public class DatePickerFragment extends Fragment {
         // Inflate the layout for this fragment
 
 
-        final Button working=(Button) view.findViewById(R.id.working);
-        final Button absent=(Button) view.findViewById(R.id.absent);
-        final Button holiday=(Button) view.findViewById(R.id.holiday);
+        final Button working = (Button) view.findViewById(R.id.working);
+        final Button absent = (Button) view.findViewById(R.id.absent);
+        final Button holiday = (Button) view.findViewById(R.id.holiday);
         working.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,8 +86,8 @@ public class DatePickerFragment extends Fragment {
 
 
         working.setBackgroundColor(COLOR_BLUE);
-         timeInEdit = (EditText) view.findViewById(R.id.timeInEditText);
-         timeOutEdit = (EditText) view.findViewById(R.id.timeOutEditText);
+        timeInEdit = (EditText) view.findViewById(R.id.timeInEditText);
+        timeOutEdit = (EditText) view.findViewById(R.id.timeOutEditText);
         timeInEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,52 +128,47 @@ public class DatePickerFragment extends Fragment {
         datePicker = (DatePicker) dialog.findViewById(R.id.datePicker);
         timePicker = (TimePicker) dialog.findViewById(R.id.timePicker);
 
-        final Button submit=(Button) dialog.findViewById(R.id.submitButton);
-
-
+        final Button submit = (Button) dialog.findViewById(R.id.submitButton);
 
 
         submit.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        int day = datePicker.getDayOfMonth();
-        int month = datePicker.getMonth() ;
-        int year = datePicker.getYear();
-        int hour = timePicker.getCurrentHour();
-        int minute = timePicker.getCurrentMinute();
+            @Override
+            public void onClick(View view) {
+                int day = datePicker.getDayOfMonth();
+                int month = datePicker.getMonth();
+                int year = datePicker.getYear();
+                int hour = timePicker.getCurrentHour();
+                int minute = timePicker.getCurrentMinute();
 
 
-        Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+                Date date = new Date();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
 
-         String timeIn="";
-         String timeOut="";
+                String timeIn = "";
+                String timeOut = "";
 
-        if(time.equals("TimeIn"))
-        {
-           timeIn= day+"/"+month+"/"+year+ " "+ hour+":"+minute;
-            try {
-                date = simpleDateFormat.parse(timeIn);
-                Log.d("Harsh",date.toString());
-            } catch (ParseException e) {
-                e.printStackTrace();
+                if (time.equals("TimeIn")) {
+                    timeIn = day + "/" + month + "/" + year + " " + hour + ":" + minute;
+                    try {
+                        date = simpleDateFormat.parse(timeIn);
+                        Log.d("Harsh", date.toString() + " " + date.getTime());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    timeInEdit.setText(timeIn);
+                    dialog.dismiss();
+
+                } else {
+
+                    timeOut = day + "/" + getMonth(month) + "/" + year + " " + " " + hour + ":" + minute;
+
+                    timeOutEdit.setText(timeOut);
+                    dialog.dismiss();
+
+                }
             }
-            timeInEdit.setText(timeIn);
-           dialog.dismiss();
-
-        }
-        else
-        {
-
-            timeOut= day+"/"+getMonth(month)+"/"+year+" "+ " "+ hour+":"+minute;
-
-            timeOutEdit.setText(timeOut);
-            dialog.dismiss();
-
-        }
-    }
-});
+        });
         dialog.show();
     }
 
