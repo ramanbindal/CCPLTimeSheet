@@ -2,10 +2,12 @@ package com.example.cub11.ccpltimesheet.view;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,33 +151,37 @@ public class DatePickerFragment extends Fragment {
         AttendanceItem attendanceItem = new AttendanceItem();
 
         if (state.equalsIgnoreCase("working")) {
-            if (timeInEdit.getText().toString().isEmpty() || timeOutEdit.getText().toString().isEmpty()) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Please Select Time !")
-                        .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
+            if (timeInEdit.getText().toString().isEmpty()) {
+                showAlertDialog("Please select Punch In Time !", false);
+            } else if (timeOutEdit.getText().toString().isEmpty()) {
+                showAlertDialog("Please select Punch Out Time !", false);
             } else {
-
                 String[] tempStrIn = finalTimeInStr.split(", ");
                 String[] tempStrOut = finalTimeOutStr.split(", ");
                 long inOutTimeDiff = outTimeInMillis - inTimeInMillis;
-                mainActivity.getAttendanceItemList().add(new AttendanceItem(tempStrIn[0], tempStrOut[0], makeTimeDiff(inOutTimeDiff), tempStrIn[1], tempStrOut[1], "CHECKINOUT", inTimeInMillis, outTimeInMillis));
-
-                showAlertDialog("Attendance Marked!");
+                mainActivity.getAttendanceItemList().add(new AttendanceItem(tempStrIn[0], tempStrOut[0], makeTimeDiff(inOutTimeDiff), tempStrIn[1],
+                        tempStrOut[1], "CHECKINOUT", inTimeInMillis, outTimeInMillis));
+                showAlertDialog("Attendance Marked!", true);
             }
         } else if (state.equalsIgnoreCase("absent")) {
-            mainActivity.getAttendanceItemList().add(new AttendanceItem(getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "ABSENT", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
-            showAlertDialog("Absent marked!");
-
+            if (timeInEdit.getText().toString().isEmpty()) {
+                showAlertDialog("Please select Date to mark Absent !", false);
+            } else {
+                mainActivity.getAttendanceItemList().add(new AttendanceItem(getFinalDate(), getFinalDate(),
+                        "09:00", "09:00:00 AM", "06:00:00 PM", "ABSENT", (Calendar.getInstance().getTime()).getTime(),
+                        (Calendar.getInstance().getTime()).getTime()));
+                showAlertDialog("Absent marked!", true);
+            }
         } else if (state.equalsIgnoreCase("holiday")) {
-            mainActivity.getAttendanceItemList().add(new AttendanceItem(getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM", "06:00:00 PM", "HOLIDAY", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
-            showAlertDialog("Holiday marked!");
+
+            if (timeInEdit.getText().toString().isEmpty()) {
+                showAlertDialog("Please select Date to mark Holiday !", false);
+            } else {
+
+                mainActivity.getAttendanceItemList().add(new AttendanceItem(getFinalDate(), getFinalDate(), "09:00", "09:00:00 AM",
+                        "06:00:00 PM", "HOLIDAY", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
+                showAlertDialog("Holiday marked!", true);
+            }
         }
 //        mainActivity.addToAttachmentItemList(attendanceItem);
     }
@@ -271,18 +277,28 @@ public class DatePickerFragment extends Fragment {
     }
 
 
-    public void showAlertDialog(String message) {
+    public void showAlertDialog(String message, final Boolean toCloseFragment) {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getActivity());
         builder.setMessage(message).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //do things
-                dialog.dismiss();
+                if (toCloseFragment) {
+                    dialog.dismiss();
+                    onBackPressed();
+                } else {
+                    dialog.dismiss();
+
+                }
             }
         });
         android.support.v7.app.AlertDialog alert = builder.create();
         alert.show();
     }
 
+    public void onBackPressed() {
+        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+    }
 
     public void showDialog(final String time) {
         final Dialog dialog = new Dialog(getActivity());
