@@ -14,6 +14,7 @@ public class AttendanceItem implements Comparable {
     public static final String IN_TIME = "in_time";
     public static final String OUT_TIME = "out_time";
     public static final String TYPE = "type";
+    public static final String MILLISECONDS="milliseconds";
 
     private long id;
     private String inDate;
@@ -25,20 +26,22 @@ public class AttendanceItem implements Comparable {
     private long inMilliSeconds;
     private long outMilliSeconds;
 
+    public AttendanceItem() {
+    }
 
-    public AttendanceItem(long id, String inDate, String outDate, String totalTime, String inTime, String outTime, String type) {
-        this.id = id;
+    public AttendanceItem(String inDate, String outDate, String totalTime, String inTime, String outTime, String type, long milliSeconds) {
         this.inDate = inDate;
         this.outDate = outDate;
         this.totalTime = totalTime;
         this.inTime = inTime;
         this.outTime = outTime;
         this.type = type;
+        this.inMilliSeconds = milliSeconds;
     }
 
 
-    public AttendanceItem(long id, String inDate, String outDate, String totalTime, String inTime, String outTime, String type, long inMilliSeconds, long outMilliSeconds) {
-        this.id = id;
+
+    public AttendanceItem(String inDate, String outDate, String totalTime, String inTime, String outTime, String type, long inMilliSeconds, long outMilliSeconds) {
         this.inDate = inDate;
         this.outDate = outDate;
         this.totalTime = totalTime;
@@ -144,7 +147,6 @@ public class AttendanceItem implements Comparable {
             values.put(IN_DATE, inDate);
             return this;
         }
-
         public Builder outDate(String outDate) {
             values.put(OUT_DATE, outDate);
             return this;
@@ -170,6 +172,12 @@ public class AttendanceItem implements Comparable {
             values.put(OUT_TIME, outTime);
             return this;
         }
+        public Builder inMilliSeconds(long inMilliSeconds) {
+            values.put(MILLISECONDS, inMilliSeconds);
+            return this;
+        }
+
+
 
         public ContentValues build() {
             return values;

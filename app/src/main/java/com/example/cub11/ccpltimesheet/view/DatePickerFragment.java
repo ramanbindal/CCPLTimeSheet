@@ -1,6 +1,8 @@
 package com.example.cub11.ccpltimesheet.view;
 
 import android.app.Dialog;
+import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,11 +18,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.cub11.ccpltimesheet.MainActivity;
 import com.example.cub11.ccpltimesheet.R;
+import com.example.cub11.ccpltimesheet.database.model.AttendanceItem;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+
+import static com.example.cub11.ccpltimesheet.Utils.findAmorPm;
+import static com.example.cub11.ccpltimesheet.Utils.makeTime;
+import static com.example.cub11.ccpltimesheet.Utils.makeTimeDiff;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +41,13 @@ public class DatePickerFragment extends Fragment {
     TimePicker timePicker;
     EditText timeInEdit;
     EditText timeOutEdit;
+    Button doneBtn;
+    String state = "working";
+    String amPMTime = "";
+    String finalTimeInStr = "";
+    String finalTimeOutStr = "";
+    long inTimeInMillis;
+    long outTimeInMillis;
 
     private static final int COLOR_WHITE = Color.parseColor("#ffffff");
 
@@ -50,8 +66,7 @@ public class DatePickerFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.datepickerfragment_layout, container, false);
         // Inflate the layout for this fragment
         final ImageView button = (ImageView) getActivity().findViewById(R.id.toolbarbtn);
@@ -68,12 +83,14 @@ public class DatePickerFragment extends Fragment {
         final Button working = (Button) view.findViewById(R.id.working);
         final Button absent = (Button) view.findViewById(R.id.absent);
         final Button holiday = (Button) view.findViewById(R.id.holiday);
+        doneBtn = view.findViewById(R.id.doneButton);
         working.setBackgroundColor(COLOR_BLUE);
         holiday.setBackgroundColor(COLOR_WHITE);
         absent.setBackgroundColor(COLOR_WHITE);
         working.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                state = "working";
                 working.setBackgroundColor(COLOR_BLUE);
                 holiday.setBackgroundColor(COLOR_WHITE);
                 absent.setBackgroundColor(COLOR_WHITE);
@@ -82,7 +99,7 @@ public class DatePickerFragment extends Fragment {
         absent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                state = "absent";
                 absent.setBackgroundColor(COLOR_BLUE);
                 working.setBackgroundColor(COLOR_WHITE);
                 holiday.setBackgroundColor(COLOR_WHITE);
@@ -91,13 +108,13 @@ public class DatePickerFragment extends Fragment {
         holiday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                state = "holiday";
                 holiday.setBackgroundColor(COLOR_BLUE);
                 absent.setBackgroundColor(COLOR_WHITE);
                 working.setBackgroundColor(COLOR_WHITE);
 
             }
         });
-
 
         working.setBackgroundColor(COLOR_BLUE);
         timeInEdit = (EditText) view.findViewById(R.id.timeInEditText);
@@ -131,7 +148,59 @@ public class DatePickerFragment extends Fragment {
             }
         });
 
+
+        doneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDoneClicked();
+            }
+        });
+
         return view;
+    }
+
+    private void onDoneClicked() {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        AttendanceItem attendanceItem = new AttendanceItem();
+
+        if (state.equalsIgnoreCase("working")) {
+            if (timeInEdit.getText().toString().isEmpty()) {
+                showAlertDialog("Please select Punch In Time !", false);
+            } else if (timeOutEdit.getText().toString().isEmpty()) {
+                showAlertDialog("Please select Punch Out Time !", false);
+            } else {
+                String[] tempStrIn = finalTimeInStr.split(", ");
+                String[] tempStrOut = finalTimeOutStr.split(", ");
+                long inOutTimeDiff = Math.abs(outTimeInMillis - inTimeInMillis);
+                mainActivity.getAttendanceItemList().add(new AttendanceItem(tempStrIn[0], tempStrOut[0], makeTimeDiff(inOutTimeDiff), tempStrIn[1],
+                        tempStrOut[1], "CHECKINOUT", inTimeInMillis, outTimeInMillis));
+                showAlertDialog("Attendance Marked!", true);
+            }
+        } else if (state.equalsIgnoreCase("absent")) {
+            if (timeInEdit.getText().toString().isEmpty()) {
+                showAlertDialog("Please select Date to mark Absent !", false);
+            } else {
+
+                String[] tempStrIn = finalTimeInStr.split(", ");
+                mainActivity.getAttendanceItemList().add(new AttendanceItem(tempStrIn[0], tempStrIn[0], "09:00", "09:00:00 AM", "06:00:00 PM", "ABSENT", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
+                showAlertDialog("Absent marked!", true);
+            }
+        } else if (state.equalsIgnoreCase("holiday")) {
+
+            if (timeInEdit.getText().toString().isEmpty()) {
+                showAlertDialog("Please select Date to mark Holiday !", false);
+            } else {
+
+                String[] tempStrIn = finalTimeInStr.split(", ");
+                mainActivity.getAttendanceItemList().add(new AttendanceItem(tempStrIn[0], tempStrIn[0], "09:00", "09:00:00 AM", "06:00:00 PM", "HOLIDAY", (Calendar.getInstance().getTime()).getTime(), (Calendar.getInstance().getTime()).getTime()));
+                showAlertDialog("Holiday marked!", true);
+            }
+        }
+    }
+
+    public void onBackPressed() {
+        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
     }
 
     public void showDialog(final String time) {
@@ -141,6 +210,7 @@ public class DatePickerFragment extends Fragment {
         dialog.setContentView(R.layout.time_picker_dialog);
         datePicker = (DatePicker) dialog.findViewById(R.id.datePicker);
         timePicker = (TimePicker) dialog.findViewById(R.id.timePicker);
+        timePicker.setIs24HourView(false);
 
         final Button submit = (Button) dialog.findViewById(R.id.submitButton);
 
@@ -149,35 +219,32 @@ public class DatePickerFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 int day = datePicker.getDayOfMonth();
-                int month = datePicker.getMonth();
+                int month = datePicker.getMonth() + 1;
                 int year = datePicker.getYear();
                 int hour = timePicker.getCurrentHour();
                 int minute = timePicker.getCurrentMinute();
 
+                amPMTime = makeTime(hour, minute);
 
-                Date date = new Date();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-
+                String amOrPm = findAmorPm(hour, minute);
 
                 String timeIn = "";
                 String timeOut = "";
 
                 if (time.equals("TimeIn")) {
-                    timeIn = day + "/" + month + "/" + year + " " + hour + ":" + minute;
-                    try {
-                        date = simpleDateFormat.parse(timeIn);
-                        Log.d("Harsh", date.toString() + " " + date.getTime());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    timeInEdit.setText(timeIn);
+                    timeIn = day + "/" + month + "/" + year + " " + hour + ":" + minute + ":00 " + amOrPm;
+                    String str = getFinalString(timeIn, 1);
+                    finalTimeInStr = str;
+                    timeInEdit.setText(str);
                     dialog.dismiss();
 
-                } else {
+                }
+                if (time.equalsIgnoreCase("TimeOut")) {
 
-                    timeOut = day + "/" + getMonth(month) + "/" + year + " " + " " + hour + ":" + minute;
-
-                    timeOutEdit.setText(timeOut);
+                    timeOut = day + "/" + month + "/" + year + " " + " " + hour + ":" + minute + ":00 " + amOrPm;
+                    String str = getFinalString(timeOut, 2);
+                    finalTimeOutStr = str;
+                    timeOutEdit.setText(str);
                     dialog.dismiss();
 
                 }
@@ -186,9 +253,43 @@ public class DatePickerFragment extends Fragment {
         dialog.show();
     }
 
-    public String getMonth(int n) {
-        String month[] = {"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
-        return String.valueOf(month[n]);
+    public String getFinalString(String time, int flag) {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
+        String str = "";
+
+        try {
+            date = simpleDateFormat.parse(time);
+            if (flag == 1) {
+                inTimeInMillis = date.getTime();
+            } else {
+                outTimeInMillis = date.getTime();
+            }
+            String[] strArray = date.toString().split(" ");
+            str = strArray[1] + " " + strArray[2] + " " + strArray[5] + ", " + amPMTime;
+            Log.e("Harsh", date.toString() + " " + date.getTime() + "final String " + str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return str;
     }
 
+    public void showAlertDialog(String message, final Boolean toCloseFragment) {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getActivity());
+        builder.setMessage(message).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //do things
+                if (toCloseFragment) {
+                    dialog.dismiss();
+                    onBackPressed();
+                } else {
+                    dialog.dismiss();
+
+                }
+            }
+        });
+        android.support.v7.app.AlertDialog alert = builder.create();
+        alert.show();
+    }
 }

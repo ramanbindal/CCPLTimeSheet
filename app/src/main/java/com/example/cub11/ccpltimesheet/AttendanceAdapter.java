@@ -55,22 +55,26 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.My
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final AttendanceItem item = attendanceItemList.get(position);
-        holder.date.setText(item.getInDate());
 
-        if (!item.getTotalTime().equals("")) {
-            holder.totalTime.setText("( " + item.getTotalTime() + " Hrs)");
+        if (item != null) {
+            holder.date.setText(item.getInDate());
+
+            if (!item.getTotalTime().equals("")) {
+                holder.totalTime.setText("( " + item.getTotalTime() + " Hrs)");
+            }
+
+            holder.inTime.setText(item.getInTime());
+            holder.outTime.setText(item.getOutTime());
+
+            if (item.getType().equals("HOLIDAY")) {
+                holder.inTime.setTextColor(Color.BLUE);
+                holder.outTime.setTextColor(Color.BLUE);
+            } else if (item.getType().equals("ABSENT")) {
+                holder.inTime.setTextColor(Color.RED);
+                holder.outTime.setTextColor(Color.RED);
+            }
         }
 
-        holder.inTime.setText(item.getInTime());
-        holder.outTime.setText(item.getOutTime());
-
-        if (item.getType().equals("HOLIDAY")) {
-            holder.inTime.setTextColor(Color.BLUE);
-            holder.outTime.setTextColor(Color.BLUE);
-        } else if (item.getType().equals("ABSENT")) {
-            holder.inTime.setTextColor(Color.RED);
-            holder.outTime.setTextColor(Color.RED);
-        }
 
     }
 
