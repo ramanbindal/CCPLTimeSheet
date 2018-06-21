@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
         android:layout_toLeftOf="@+id/absent"
-        android:background="@drawable/buttonbackground"
         android:padding="5dp"
         android:text="Working" />
 
@@ -19,7 +18,6 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/buttonbackground"
         android:layout_marginLeft="-5dp"
         android:layout_marginTop="70dp"
         android:padding="5dp"
@@ -30,7 +28,6 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="-5dp"
-        android:background="@drawable/buttonbackground"
         android:layout_marginTop="70dp"
         android:layout_toRightOf="@+id/absent"
         android:padding="5dp"
@@ -43,17 +40,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
         android:layout_below="@+id/holiday"
         android:text="Time In" />
 
     <EditText
         android:id="@+id/timeInEditText"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
-
         android:layout_below="@+id/holiday"
+        android:hint="Please Select Date and Time"
         android:layout_toEndOf="@+id/timeInTextView" />
 
     <TextView
@@ -61,6 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/timeInTextView"
+        android:layout_marginLeft="10dp"
 
 
         android:layout_marginTop="50dp"
@@ -69,11 +68,11 @@
 
     <EditText
         android:id="@+id/timeOutEditText"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/timeInTextView"
-        android:layout_marginLeft="20dp"
-
+        android:layout_marginLeft="10dp"
+        android:hint="Please Select Date and Time"
         android:layout_marginTop="30dp"
         android:layout_toRightOf="@+id/timeOutTextView" />
     <Button

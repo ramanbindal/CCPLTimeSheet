@@ -59,20 +59,7 @@ public class HistoryFragment extends Fragment implements RecyclerItemTouchHelper
         final View view = inflater.inflate(R.layout.historyfragment, container, false);
 
 
-        ImageView button = (ImageView) view.findViewById(R.id.closeButton);
 
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerFragment fragment2 = new DatePickerFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout, fragment2);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
-        });
 
         MainActivity activity = (MainActivity) getActivity();
         attendanceItemList = activity.getAttendanceItemList();
@@ -111,23 +98,22 @@ public class HistoryFragment extends Fragment implements RecyclerItemTouchHelper
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof AttendanceAdapter.MyViewHolder) {
-            // get the removed item name to display it in snack bar
-            String name = attendanceItemList.get(viewHolder.getAdapterPosition()).getInDate();
-
             // backup of removed item for undo purpose
             final AttendanceItem deletedItem = attendanceItemList.get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
 
             // remove the item from recycler view
             attendanceAdapter.removeItem(viewHolder.getAdapterPosition());
+            attendanceAdapter.notifyItemChanged(position);
 
             // showing snack bar with Undo option
-            Snackbar snackbar = Snackbar.make(linearLayout, name + " Removed from List!", Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(linearLayout, "Record removed from list!", Snackbar.LENGTH_LONG);
             snackbar.setAction("UNDO", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // undo is selected, restore the deleted item
                     attendanceAdapter.restoreItem(deletedItem, deletedIndex);
+                    attendanceAdapter.notifyItemChanged(deletedIndex);
                 }
             });
             snackbar.setActionTextColor(Color.YELLOW);
