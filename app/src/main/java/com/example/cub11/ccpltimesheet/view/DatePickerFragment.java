@@ -262,12 +262,35 @@ public class DatePickerFragment extends Fragment {
                 outTimeInMillis = date.getTime();
             }
             String[] strArray = date.toString().split(" ");
-            str = strArray[1] + " " + strArray[2] + " " + strArray[5] + ", " + amPMTime;
+            String day = strArray[0];
+            String fullDayName = getFullDayName(day);
+            str = strArray[1] + " " + strArray[2] + " " + strArray[5] + "," + fullDayName + ", " + amPMTime;
+            Log.e("Harsh", date.toString() + " " + date.getTime() + "final String " + str);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         return str;
+    }
+
+    private String getFullDayName(String day) {
+        switch (day) {
+            case "Mon":
+                return "Monday";
+            case "Tue":
+                return "Tuesday";
+            case "Wed":
+                return "Wednesday";
+            case "Thu":
+                return "Thursday";
+            case "Fri":
+                return "Friday";
+            case "Sat":
+                return "Saturday";
+            case "Sun":
+                return "Sunday";
+        }
+        return "";
     }
 
     public void showAlertDialog(String message, final Boolean toCloseFragment) {
