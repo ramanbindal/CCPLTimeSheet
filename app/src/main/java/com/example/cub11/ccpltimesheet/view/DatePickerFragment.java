@@ -78,33 +78,33 @@ public class DatePickerFragment extends Fragment {
         final Button holiday = (Button) view.findViewById(R.id.holiday);
 
         doneBtn = view.findViewById(R.id.doneButton);
-        working.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackground) );
-        holiday.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
-        absent.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
+        working.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackground));
+        holiday.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder));
+        absent.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder));
         working.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 state = Const.WORKING_DAY;
-                working.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackground) );
-                holiday.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
-                absent.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
+                working.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackground));
+                holiday.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder));
+                absent.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder));
             }
         });
         absent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 state = Const.ABSENT;
-                working.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
-                holiday.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
-                absent.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackground) );
+                working.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder));
+                holiday.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder));
+                absent.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackground));
             }
         });
         holiday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                working.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
-                holiday.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackground) );
-                absent.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder) );
+                working.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder));
+                holiday.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackground));
+                absent.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.buttonbackgroundborder));
                 state = Const.HOLIDAY;
 
             }
@@ -223,13 +223,15 @@ public class DatePickerFragment extends Fragment {
 
                 amPMTime = makeTime(hour, minute);
 
+                Log.e("raman", " day -" + day + " month-" + month + " ampmtime " + amPMTime);
+
                 String amOrPm = findAmorPm(hour, minute);
 
                 String timeIn = "";
                 String timeOut = "";
 
                 if (time.equals("TimeIn")) {
-                    timeIn = day + "/" + month + "/" + year + " " + hour + ":" + minute + ":00 " + amOrPm;
+                    timeIn = day + "/" + month + "/" + year + " " + amPMTime;
                     String str = getFinalString(timeIn, 1);
                     finalTimeInStr = str;
                     timeInEdit.setText(str);
@@ -238,7 +240,7 @@ public class DatePickerFragment extends Fragment {
                 }
                 if (time.equalsIgnoreCase("TimeOut")) {
 
-                    timeOut = day + "/" + month + "/" + year + " " + " " + hour + ":" + minute + ":00 " + amOrPm;
+                    timeOut = day + "/" + month + "/" + year + " " + " " + amPMTime;
                     String str = getFinalString(timeOut, 2);
                     finalTimeOutStr = str;
                     timeOutEdit.setText(str);
@@ -255,6 +257,8 @@ public class DatePickerFragment extends Fragment {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
         String str = "";
 
+        Log.e("raman", " date -" + time);
+
         try {
             date = simpleDateFormat.parse(time);
             if (flag == 1) {
@@ -262,10 +266,16 @@ public class DatePickerFragment extends Fragment {
             } else {
                 outTimeInMillis = date.getTime();
             }
+
+            Log.e("raman", " date -" + date);
+
             String[] strArray = date.toString().split(" ");
             String day = strArray[0];
+
+            Log.e("raman", " day -" + day);
+
             String fullDayName = getFullDayName(day);
-            str = strArray[1] + " " + strArray[2] + " " + strArray[5] + "," + fullDayName + ", " + amPMTime;
+            str = strArray[1] + " " + strArray[2] + " " + strArray[5] + " ," + fullDayName + ", " + amPMTime;
             Log.e("Harsh", date.toString() + " " + date.getTime() + "final String " + str);
         } catch (ParseException e) {
             e.printStackTrace();

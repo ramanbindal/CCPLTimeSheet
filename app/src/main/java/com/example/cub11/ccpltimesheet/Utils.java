@@ -115,7 +115,7 @@ public class Utils {
                 break;
         }
 
-        String finalDate = monthName + " " + dateValue + " " + yearValue + " , " + dayName;
+        String finalDate = monthName + " " + dateValue + " " + yearValue + " ," + dayName;
         Log.e("raman", "finalDate " + finalDate + " and local time is :" + localTime + " and time in milliseconds is : " + milliSeconds);
 
 
@@ -156,8 +156,16 @@ public class Utils {
         else
             min = String.valueOf(minutes);
 
+        String hourStr="";
+        if (hour < 10)
+            hourStr = "0" + hour;
+        else
+            hourStr = String.valueOf(hour);
+
+
+
         // Append in a StringBuilder
-        return new StringBuilder().append(hour).append(':')
+        return new StringBuilder().append(hourStr).append(':')
                 .append(min).append(":00").append(" ").append(timeSet).toString();
     }
 
